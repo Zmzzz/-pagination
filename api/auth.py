@@ -1,0 +1,11 @@
+from  rest_framework.authentication import BaseAuthentication
+from rest_framework.exceptions import AuthenticationFailed
+from  api import  models
+class LuffuAtuh(BaseAuthentication):
+    def authenticate(self, request):
+        token=request.query_params.get('token')
+        token_obj=models.Token.objects.filter(token=token).first()
+        if(token_obj):
+         return  (token_obj.user,token_obj)
+        else:
+            raise AuthenticationFailed({'code':1002,'error':'认证失败'})
